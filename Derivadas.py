@@ -49,6 +49,7 @@ def Derivate():
             return None, None, None, None
 
         else:
+            
             METODOS = {
                 'Diferencias Hacia Atrás': diff_hacia_atras,
                 'Diferencias Hacia Adelante': diff_hacia_adelante,
@@ -82,7 +83,7 @@ def Derivate():
             return matriz[nivel - 1][0], error, errores[0], matriz
 
 
-    def diff_cincopuntos(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos = None):
+    def diff_cincopuntos(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos= None):
         j = 0
         resultados = list()
         errores = list()
@@ -216,7 +217,7 @@ def Derivate():
         return resultados, errores
 
 
-    def diff_trespuntos(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos = None):
+    def diff_trespuntos(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None,valores_verdaderos= None):
         resultados = list()
         errores = list()
         j = 0
@@ -228,7 +229,8 @@ def Derivate():
                 sg.popup(f'ERROR', no_titlebar=True,
                     line_width=50)
 
-            else: 
+            else:
+
                 if diferencia == "Primera diferencia":
 
                     DIFERENCIAS = {
@@ -276,10 +278,11 @@ def Derivate():
         return resultados, errores
 
 
-    def diff_centrada(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos = None):
+    def diff_centrada(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos= None):
         j = 0
         resultados = list()
         errores = list()
+
         if fx != None:
 
             px, variables = transform_fx(fx)
@@ -290,6 +293,7 @@ def Derivate():
                     line_width=50)
 
             else: 
+                
 
                 if diferencia == "Primera diferencia":
                     DIFERENCIAS = {
@@ -368,7 +372,7 @@ def Derivate():
         return resultados, errores
 
 
-    def diff_hacia_adelante(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos = None):
+    def diff_hacia_adelante(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos= None):
         resultados = list()
         errores = list()
         j = 0
@@ -381,6 +385,7 @@ def Derivate():
                     line_width=50)
 
             else:
+
 
                 if diferencia == "Primera diferencia":
                     DIFERENCIAS = {
@@ -446,13 +451,14 @@ def Derivate():
         return resultados, errores
 
 
-    def diff_hacia_atras(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None, valores_verdaderos = None):
+    def diff_hacia_atras(orden, paso, diferencia, valor_inicial=None, fx=None, yi=None,valores_verdaderos= None):
         j = 0
         resultados = list()
         errores = list()
         if fx != None:
 
             px, variables = transform_fx(fx)
+
             if len(variables) > 1:
                 
                 sg.popup(f'ERROR', no_titlebar=True,
@@ -626,11 +632,12 @@ def Derivate():
                 show(['-COMBO|DIF-'], diff_window)
 
 
-        if values["-TABGROUP-"] == '-TAB6-':
+        if  event == "-TABGROUP-" and values["-TABGROUP-"] == '-TAB6-':
             diff_window['-COMBO|DATOS-'].update(values=["Función Matemática"])
-        else:
+        elif event == "-TABGROUP-" and values["-TABGROUP-"] != '-TAB6-':
             diff_window['-COMBO|DATOS-'].update(values=["Función Matemática","Tabla de datos"])
-
+        else:
+            pass
         if event == "-COMBO|DIF-" and values["-COMBO|DATOS-"] == "Tabla de datos":
             reset(["-IN|VV1-", "-IN|VV2-", "-IN|VV3-", "-IN|VV4-"], diff_window)
             show(["-TXT|VV-"], diff_window)
