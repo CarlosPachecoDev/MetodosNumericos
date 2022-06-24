@@ -390,8 +390,8 @@ def Integrate():
         [sg.pin(sg.Text("Limite inferior 1:", key="-TXT|A1-", visible= False)), sg.pin(sg.Input(enable_events=True, key="-IN|A1-", size=(13, 1), visible= False)),sg.pin(sg.Text("Limite superior 1:", key="-TXT|B1-", visible= False)),sg.pin(sg.Input(enable_events=True, key="-IN|B1-", size=(13, 1), visible=False))],
         [sg.pin(sg.Text("Limite inferior 2:", key="-TXT|A2-", visible= False)), sg.pin(sg.Input(enable_events=True, key="-IN|A2-", size=(13, 1), visible= False)),sg.pin(sg.Text("Limite superior 2:", key="-TXT|B2-", visible= False)),sg.pin(sg.Input(enable_events=True, key="-IN|B2-", size=(13, 1), visible=False))],
         [sg.pin(sg.Text("Limite inferior 3:", key="-TXT|A3-", visible= False)), sg.pin(sg.Input(enable_events=True, key="-IN|A3-", size=(13, 1), visible= False)),sg.pin(sg.Text("Limite superior 3:", key="-TXT|B3-", visible= False)),sg.pin(sg.Input(enable_events=True, key="-IN|B3-", size=(13, 1), visible=False))],
-        [sg.pin(sg.Text('Cantidad de puntos: ', key="-LBL|CANT-", visible=False)), sg.pin(sg.Input(enable_events=True, key="-IN|CANT-", size=(13, 1), visible=False)),sg.pin(sg.Button('Llenar Tabla', key="-BTN|TABLE-", visible=False))],
         [sg.pin(sg.Text('Método de integración', key="-TXT|MTD-")), sg.pin(sg.Combo(['Trapecio Simple', 'Trapecio Compuesto','Simpson 1/3 Simple', 'Simpson 1/3 Compuesto', 'Simpson 3/8 Simple', 'Simpson 3/8 Compuesto', "Rosemberg", "Cuadratura Guassiana", "Boole"], default_value="", enable_events=True, readonly=True, key='-COMBO|MTD-'))],
+        [sg.pin(sg.Text('Cantidad de puntos: ', key="-LBL|CANT-", visible=False)), sg.pin(sg.Input(enable_events=True, key="-IN|CANT-", size=(13, 1), visible=False)),sg.pin(sg.Button('Llenar Tabla', key="-BTN|TABLE-", visible=False))],
         [sg.pin(sg.Text("Nivel:", key="-TXT|LVL-", visible=False)), sg.pin(sg.Input(enable_events=True, key="-IN|LVL-", size=(13, 1), visible=False))],
         [sg.pin(sg.Text("Puntos:", key="-TXT|PT-", visible=False)), sg.pin(sg.Input(enable_events=True, key="-IN|PT-", size=(13, 1), visible=False))],
         [sg.pin(sg.Text("Numero de intervalos:", key="-TXT|ITV-", visible=False)), sg.pin(sg.Input(enable_events=True, key="-IN|ITV-", size=(13, 1), visible=False))],
@@ -548,16 +548,18 @@ def Integrate():
             #Obteniendo los intervalos ingresados
             limites_inferiores = list()
             limites_superiores = list()
+            
+            if values['-COMBO|DATOS-'] == 'Función Matemática':
 
-            if tipo == 1:
-                limites_inferiores.append(float(values["-IN|A-"]))
-                limites_superiores.append(float(values["-IN|B-"]))
+                if tipo == 1:
+                    limites_inferiores.append(float(values["-IN|A-"]))
+                    limites_superiores.append(float(values["-IN|B-"]))
 
-            else:
+                else:
 
-                for i in range(tipo):    
-                    limites_inferiores.append(float(values[f"-IN|A{i+1}-"]))
-                    limites_superiores.append(float(values[f"-IN|B{i+1}-"]))
+                    for i in range(tipo):    
+                        limites_inferiores.append(float(values[f"-IN|A{i+1}-"]))
+                        limites_superiores.append(float(values[f"-IN|B{i+1}-"]))
 
 
             if values['-COMBO|MTD-'] == 'Trapecio Compuesto':
@@ -565,7 +567,7 @@ def Integrate():
                 if values["-COMBO|DATOS-"] == "Función Matemática":
                     salida = f"Aplicando el método de Trapecio Compuesto se obtine como resultado {trapecio_compuesto(expresion=window['-TXT|FUNCION-'].get(), limites_inferiores=limites_inferiores, limites_superiores= limites_superiores, n=int(values['-IN|ITV-']), tipo= tipo)}"
                 else:
-                    salida = f"Aplicando el método de Trapecio Compuesto se obtine como resultado {trapecio_compuesto(datos= datos)}"
+                    salida = f"Aplicando el método de Trapecio Compuesto se obtine como resultado {trapecio_compuesto(datos= datos, tipo=1)}"
 
             elif values['-COMBO|MTD-'] == 'Trapecio Simple':
 
@@ -575,7 +577,7 @@ def Integrate():
                         salida += f"Aplicando el método de Trapecio Simple se obtine como resultado {resultado}"
 
                 else:
-                    salida += f"Aplicando el método de Trapecio Simple se obtine como resultado {trapecio_simple(datos= datos)}"
+                    salida += f"Aplicando el método de Trapecio Simple se obtine como resultado {trapecio_simple(datos= datos, tipo=1)}"
 
             elif values['-COMBO|MTD-'] == 'Simpson 1/3 Simple':
 
@@ -583,7 +585,7 @@ def Integrate():
                     salida += f"Aplicando el método de Simpson 1/3 Simple se obtine como resultado {simpson_1_tercio_simple(tipo, expresion=window['-TXT|FUNCION-'].get(), limites_inferiores= limites_inferiores, limites_superiores= limites_superiores)}"
 
                 else:
-                    salida += f"Aplicando el método de Simpson 1/3 Simple se obtine como resultado {simpson_1_tercio_simple(datos= datos)}"
+                    salida += f"Aplicando el método de Simpson 1/3 Simple se obtine como resultado {simpson_1_tercio_simple(datos= datos, tipo=1)}"
 
             elif values['-COMBO|MTD-'] == 'Simpson 1/3 Compuesto':
                 
@@ -591,7 +593,7 @@ def Integrate():
                     salida += f"Aplicando el método de Simpson 1/3 Compuesto se obtine como resultado {simpson_1_tercio_compuesto(tipo= tipo,expresion=window['-TXT|FUNCION-'].get(), limites_inferiores=float(values['-IN|A-']), limites_superiores=float(values['-IN|B-']), n=int(values['-IN|ITV-']))}"
 
                 else:
-                    salida += f"Aplicando el método de Simpson 1/3 Compuesto se obtine como resultado {simpson_1_tercio_compuesto(datos= datos)}"
+                    salida += f"Aplicando el método de Simpson 1/3 Compuesto se obtine como resultado {simpson_1_tercio_compuesto(datos= datos, tipo=1)}"
 
             elif values['-COMBO|MTD-'] == 'Simpson 3/8 Simple':
                 
@@ -599,7 +601,7 @@ def Integrate():
                     salida += f"Aplicando el método de Simpson 3/8 Compuesto se obtine como resultado {simpson_3_8_simple(tipo= tipo, expresion=window['-TXT|FUNCION-'].get(), limites_inferiores= limites_inferiores, limites_superiores= limites_superiores)}"
 
                 else:
-                    salida += f"Aplicando el método de Simpson 1/3 Compuesto se obtine como resultado {simpson_3_8_simple(datos= datos)}"
+                    salida += f"Aplicando el método de Simpson 1/3 Compuesto se obtine como resultado {simpson_3_8_simple(datos= datos, tipo=1)}"
 
             elif values['-COMBO|MTD-'] == 'Simpson 3/8 Compuesto':
 
@@ -607,7 +609,7 @@ def Integrate():
                     salida += f"Aplicando el método de Simpson 3/8 Compuesto se obtine como resultado {simpson_3_8_compuesto(tipo= tipo, expresion=window['-TXT|FUNCION-'].get(), limites_inferiores= limites_inferiores, limites_superiores= limites_superiores, n=int(values['-IN|ITV-']))}"
 
                 else:
-                    salida += f"Aplicando el método de Simpson 3/8 Compuesto se obtine como resultado {simpson_3_8_compuesto(datos= datos)}"
+                    salida += f"Aplicando el método de Simpson 3/8 Compuesto se obtine como resultado {simpson_3_8_compuesto(datos= datos, tipo=1)}"
             
             elif values['-COMBO|MTD-'] == 'Rosemberg':
 

@@ -29,12 +29,13 @@ def main_menu():
     from arctgx import submenuarctang
     from lnx1 import submenulnxm1
     from fraccion import submenufraccion
-    from AdamsBashforth import solve_multipasos
+    from AdamsBashforth import solve_multipasos 
+    from Newton import solve_newton
 
     menu_def = [['&Unidad 1', ['&Series de Taylor',['sen x', 'cos x',"℮ˣ","sh x","ch x","arcsen x", "ln(1+x)", "1/(1 + x²)", "arctg x"]]],
                 ['&Unidad 2', ['Gráfico', 'Bisección', 'Falsa posición',"Punto fijo", 'Newthon raphson',"Secante","Bairstow", "Muller"]],
                 ['&Unidad 3', ['Polinomio de Lagrange', 'Polinomio de Newton', 'Diferencias Divididas', 'Polinomio de Hermite']],
-                ['&Unidad 4', ['---', '&Derivadas','---', '&Integrales', '---', 'Command &3', 'Command &4']],
+                ['&Unidad 4', ['---', '&Derivadas','---', '&Integrales']],
                 ['Unidad 5', ['Método de Euler',['Euler hacia adelante', 'Euler hacia atrás', "Euler centrado", "Euler mejorado"],"Método de Taylor", "Método de Runge Kutta", "Método adaptativo"]]]
 
     layout = [[sg.MenubarCustom(menu_def, pad=(0,0), k='-CUST MENUBAR-')],[sg.Image(filename="portada4.png")]
@@ -109,6 +110,8 @@ def main_menu():
             solve_multipasos()
         elif event == 'Polinomio de Hermite':
             solve_hermite()
+        elif event == 'Polinomio de Newton':
+            solve_newton()
         else:
             continue
 
@@ -122,3 +125,4 @@ if __name__ == '__main__':
     import pandas
     import sympy
     main_menu()
+    

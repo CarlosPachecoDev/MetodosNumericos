@@ -6,7 +6,6 @@ from Calculadora import *
 from UtilitiesGUI import *
 
 def Derivate():
-
     def get_datos(col):
         val_x = [float(diff_window[f"-IN|X{x+1}-"].get()) for x in range(col)]
         val_y = [float(diff_window[f"-IN|Y{x+1}-"].get()) for x in range(col)]
@@ -566,7 +565,6 @@ def Derivate():
 
     while True:
         event, values = diff_window.read()
-        print(f"Evento: {event}")
 
         # Validando ingreso unicamente de numeros en inputs
         if event in inputs and len(values[event]) and values[event][-1] not in ('0123456789.-'):
@@ -638,12 +636,22 @@ def Derivate():
             diff_window['-COMBO|DATOS-'].update(values=["Función Matemática","Tabla de datos"])
         else:
             pass
-        if event == "-COMBO|DIF-" and values["-COMBO|DATOS-"] == "Tabla de datos":
-            reset(["-IN|VV1-", "-IN|VV2-", "-IN|VV3-", "-IN|VV4-"], diff_window)
-            show(["-TXT|VV-"], diff_window)
+
+        if event == "-COMBO|DATOS-":
+            diff_window["-COMBO|DIF-"].update(value="")
+
+
+        if values["-COMBO|DATOS-"] == "Tabla de datos":
             for i in radio_keys:
                 if diff_window[i].metadata:
                     show([f'-TXT|VV{i}-', f"-IN|VV{i}-"], diff_window)
+                else:
+                    hide([f'-TXT|VV{i}-', f"-IN|VV{i}-"], diff_window) 
+
+        if event == "-COMBO|DIF-" and values["-COMBO|DATOS-"] == "Tabla de datos":
+            reset(["-IN|VV1-", "-IN|VV2-", "-IN|VV3-", "-IN|VV4-"], diff_window)
+            show(["-TXT|VV-"], diff_window)
+
 
             reset(["-IN|X1-", "-IN|X2-", "-IN|X3-", "-IN|X4-", "-IN|X5-", "-IN|X6-",
                 "-IN|Y1-", "-IN|Y2-", "-IN|Y3-", "-IN|Y4-", "-IN|Y5-", "-IN|Y6-"], diff_window)
@@ -705,8 +713,15 @@ def Derivate():
             show(['-TXT|X-', '-TXT|Y-'], diff_window)
             for i in range(MAX_COL):
                 show([f'-IN|X{i+1}-', f'-IN|Y{i+1}-'], diff_window)
-        else:
+        elif values["-COMBO|DATOS-"] != "Tabla de datos":
+            reset(["-IN|VV1-", "-IN|VV2-", "-IN|VV3-", "-IN|VV4-"], diff_window)
             hide(["-TXT|VV-"], diff_window)
+            for i in radio_keys:
+                if diff_window[i].metadata:
+                    hide([f'-TXT|VV{i}-', f"-IN|VV{i}-"], diff_window)
+
+        else:
+            pass
 
         if event == "-COMBO|DATOS-":
             if values["-COMBO|DATOS-"] == "Función Matemática":

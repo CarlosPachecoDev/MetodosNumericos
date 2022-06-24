@@ -26,11 +26,6 @@ def transform_fx(fx):
         }
         for key, value in SYMBOLS.items():
             if key in fx:
-                """if "√" == key:
-                    m = re.search(r'√\(.*\)', fx)
-                    exchange = m.group().replace(key, "")+value
-                    fx = fx.replace(m.group(), exchange)
-                    continue"""
                 fx = fx.replace(key, value)
 
         if 'cot' in fx:
@@ -103,7 +98,7 @@ def showCalculator():
         [sg.Sizegrip(background_color=BORDER_COLOR)]
     ]
 
-    calculadora = sg.Window('Dashboard PySimpleGUI-Style', layout, margins=(0, 0), background_color=BORDER_COLOR, default_button_element_size=(5, 2), auto_size_buttons=False, grab_anywhere=False, no_titlebar=True)
+    calculadora = sg.Window('', layout, margins=(0, 0), background_color=BORDER_COLOR, default_button_element_size=(5, 2), auto_size_buttons=False, grab_anywhere=False, no_titlebar=True)
 
     display_calculator = ''
 
